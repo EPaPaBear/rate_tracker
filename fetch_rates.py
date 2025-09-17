@@ -2,7 +2,7 @@ import requests
 import sqlite3
 from datetime import datetime, UTC
 
-GRAPHQL_ENDPOINT = "https://api.cashramp.co/graphql"
+GRAPHQL_ENDPOINT = "https://api.useaccrue.com/graphql/"
 COUNTRIES = ["GH"]  # Add more country codes as needed
 
 QUERY_TEMPLATE = """

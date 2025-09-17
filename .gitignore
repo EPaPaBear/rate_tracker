@@ -213,3 +213,4 @@ __marimo__/
 # My commands
 plan.md
 .streamlit/secrets.toml
+market_rates.db
