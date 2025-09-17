@@ -4,16 +4,13 @@ Simple Test for Cashramp Market Rate Tracker
 A simpler version without Unicode characters that can cause encoding issues.
 """
 
-import sqlite3
-import pandas as pd
-from datetime import datetime, timedelta, UTC
 import sys
 import os
 
 # Add current directory to path for imports
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from db_utils import init_db, get_rates_data
+from db_utils import get_rates_data
 from model_selector import select_best_model, generate_forecast
 from seed_data import seed_fake_data
 

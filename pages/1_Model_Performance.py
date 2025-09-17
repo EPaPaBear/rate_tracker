@@ -3,8 +3,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-from db_utils import get_rates_data
-from model_selector import select_best_model, generate_forecast
+from accrue_tracker.db_utils import get_rates_data
+from accrue_tracker.model_selector import select_best_model, generate_forecast
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -94,7 +94,7 @@ for model_name, result in model_results.items():
     })
 
 metrics_df = pd.DataFrame(metrics_data)
-st.dataframe(metrics_df, width=None)
+st.dataframe(metrics_df)
 
 # Best model identification
 best_model_name = min(model_results.keys(), key=lambda k: model_results[k]["metrics"]["mae"])
@@ -220,7 +220,7 @@ if residual_data:
         })
 
     residual_stats_df = pd.DataFrame(residual_stats)
-    st.dataframe(residual_stats_df, width=None)
+    st.dataframe(residual_stats_df)
 
 # Feature Importance (for Prophet)
 st.header("Model Insights")

@@ -1,9 +1,9 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime
-from db_utils import get_rates_data
-from model_selector import select_best_model, generate_forecast
-from alert_utils import send_model_performance_alert, send_rate_threshold_alert
+from accrue_tracker.db_utils import get_rates_data
+from accrue_tracker.model_selector import select_best_model, generate_forecast
+from accrue_tracker.alert_utils import send_model_performance_alert, send_rate_threshold_alert
 import warnings
 warnings.filterwarnings('ignore')
 

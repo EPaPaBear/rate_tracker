@@ -2,7 +2,7 @@ import sqlite3
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta, UTC
-from db_utils import init_db, prune_old_data
+from db_utils import init_db
 
 def seed_fake_data(days=7, hours_per_day=24, countries=["GH"], base_rate=10.0):
     """
