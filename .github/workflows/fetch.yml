@@ -37,13 +37,13 @@ jobs:
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --only=main --no-root  # ✅ FIX: prevent Poetry from trying to install project package
-
+        run: poetry install --only=main --no-root  
+        
       - name: Fetch rates
-        run: poetry run python fetch_rates.py
+        run: poetry run python accrue_tracker/fetch_rates.py
 
       - name: Prune old data (keep 90 days)
-        run: poetry run python -c "from db_utils import prune_old_data; deleted = prune_old_data(90); print(f'Pruned {deleted} old records')"
+        run: poetry run python -c "from accrue_tracker.db_utils import prune_old_data; deleted = prune_old_data(90); print(f'Pruned {deleted} old records')"
 
       - name: Commit & push DB changes
         run: |
