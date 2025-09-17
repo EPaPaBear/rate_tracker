@@ -34,7 +34,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --only=main
+        run: poetry install --only=main --no-root  # ✅ FIX: prevent Poetry from trying to install project package
 
       - name: Fetch rates
         run: poetry run python fetch_rates.py
