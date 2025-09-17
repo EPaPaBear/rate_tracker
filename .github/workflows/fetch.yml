@@ -5,6 +5,9 @@ on:
     - cron: "*/10 * * * *"  # Every 10 minutes
   workflow_dispatch:        # Allow manual runs
 
+permissions:
+  contents: write
+
 jobs:
   fetch:
     runs-on: ubuntu-latest
