@@ -1,52 +1,52 @@
-# 📑 Cashramp Market Rate Tracker – Self-Tuning Forecasting & Alerting System
+# Cashramp Market Rate Tracker – Self-Tuning Forecasting & Alerting System
 
 A sophisticated Python application that automatically tracks Cashramp market rates, performs intelligent model selection between Prophet and ARIMA, and sends proactive email alerts when market conditions or model performance degrade.
 
-## 🚀 Key Features
+## Key Features
 
-✅ **Self-Tuning Forecasting** – Automatically compares Prophet vs ARIMA models and selects the best performer
-✅ **Directional Market Alerts** – Email notifications when rates go above/below user-defined thresholds
-✅ **Model Performance Monitoring** – Alerts when forecast accuracy degrades (MAPE-based)
-✅ **Email Notifications with CSV** – Automated alerts include detailed forecast data as attachments
-✅ **Interactive Multi-Page Dashboard** – Main dashboard + dedicated model performance analytics
-✅ **Automated Data Collection** – GitHub Actions fetch rates every 30 minutes
-✅ **Local Test Harness** – Comprehensive testing framework before deployment
-✅ **Data Retention Management** – Automatic pruning of old records (90-day retention)
+- **Self-Tuning Forecasting** – Automatically compares Prophet vs ARIMA models and selects the best performer
+- **Directional Market Alerts** – Email notifications when rates go above/below user-defined thresholds
+- **Model Performance Monitoring** – Alerts when forecast accuracy degrades (MAPE-based)
+- **Email Notifications with CSV** – Automated alerts include detailed forecast data as attachments
+- **Interactive Multi-Page Dashboard** – Main dashboard + dedicated model performance analytics
+- **Automated Data Collection** – GitHub Actions fetch rates every 10 minutes
+- **Local Test Harness** – Comprehensive testing framework before deployment
+- **Data Retention Management** – Automatic pruning of old records (90-day retention)
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 accrue_tracker/
-├── 📊 Core Application
+├── Core Application
 │   ├── app.py                      # Main Streamlit dashboard with alerts
 │   ├── pages/
 │   │   └── 1_Model_Performance.py  # Detailed model analytics & diagnostics
 │
-├── 🤖 ML & Forecasting
+├── ML & Forecasting
 │   ├── model_selector.py           # Auto model training & selection (Prophet/ARIMA)
 │   ├── fetch_rates.py              # Cashramp API data fetcher
 │   └── db_utils.py                 # Database operations & utilities
 │
-├── 📧 Alerting System
+├── Alerting System
 │   └── alert_utils.py              # Email notifications with CSV attachments
 │
-├── 🧪 Testing & Development
+├── Testing & Development
 │   ├── seed_data.py                # Generate realistic test data
 │   ├── local_test.py               # Comprehensive test harness
 │   └── market_rates.db             # SQLite database (auto-created)
 │
-├── ⚙️ Deployment
+├── Deployment
 │   ├── .github/workflows/fetch.yml # Automated data collection (every 30min)
 │   ├── pyproject.toml              # Poetry dependency management
 │   └── poetry.lock                 # Locked dependencies
 │
-└── 📚 Documentation
+└── Documentation
     ├── README.md                   # This file
     ├── plan.md                     # Detailed implementation plan
     └── model_selection.log         # Auto-generated model performance logs
 ```
 
-## 🛠️ Quick Start
+## Quick Start
 
 ### Prerequisites
 - Python 3.11+
@@ -79,7 +79,7 @@ poetry run streamlit run app.py
 poetry run python fetch_rates.py
 ```
 
-## 📊 Dashboard Features
+## Dashboard Features
 
 ### Main Dashboard (`app.py`)
 - **Real-time Metrics**: Latest deposit/withdrawal rates with timestamps
@@ -98,7 +98,7 @@ poetry run python fetch_rates.py
 - **Prophet Components**: Trend and seasonality decomposition
 - **Performance Reports**: Exportable analytics
 
-## 🤖 Intelligent Model Selection
+## Intelligent Model Selection
 
 The system automatically:
 
@@ -113,7 +113,7 @@ The system automatically:
 - **RMSE** (Root Mean Square Error): Penalizes larger errors more heavily
 - **MAPE** (Mean Absolute Percentage Error): Error as percentage of actual values
 
-## 🚨 Advanced Alert System
+## Advanced Alert System
 
 ### 1. Model Performance Alerts
 - Triggered when MAPE exceeds user-defined threshold (default: 10%)
@@ -132,10 +132,10 @@ Supports standard SMTP providers:
 - **Outlook**: `smtp-mail.outlook.com:587`
 - **Custom SMTP**: Any standard SMTP service
 
-## 🔄 Automated Data Collection
+## Automated Data Collection
 
 ### GitHub Actions Workflow
-- **Frequency**: Every 30 minutes (configurable)
+- **Frequency**: Every 10 minutes (configurable)
 - **Data Fetching**: Calls Cashramp GraphQL API
 - **Database Updates**: Commits new data automatically
 - **Data Retention**: Prunes records older than 90 days
@@ -154,7 +154,7 @@ poetry run python seed_data.py
 poetry run python -c "from db_utils import prune_old_data; print(f'Deleted {prune_old_data(30)} records')"
 ```
 
-## 🧪 Testing Framework
+## Testing Framework
 
 ### Comprehensive Test Suite (`local_test.py`)
 ```bash
@@ -177,7 +177,7 @@ poetry run python seed_data.py --days 7 --countries GH NG --summary
 poetry run python seed_data.py --test-scenarios
 ```
 
-## ☁️ Deployment
+## Deployment
 
 ### Streamlit Cloud
 1. Push repository to GitHub
@@ -197,7 +197,7 @@ DEFAULT_RECIPIENT=alerts@yourcompany.com
 DEFAULT_SENDER=cashramp-tracker@yourcompany.com
 ```
 
-## 📈 Usage Examples
+## Usage Examples
 
 ### Basic Forecasting
 ```python
@@ -239,7 +239,7 @@ send_rate_threshold_alert(
 )
 ```
 
-## 🔧 Configuration
+## Configuration
 
 ### Model Settings
 - **Validation Split**: Fraction of data for model validation (default: 0.2)
@@ -253,11 +253,11 @@ send_rate_threshold_alert(
 - **Forecast Horizon**: Hours ahead to forecast (12-168 hours)
 
 ### Data Settings
-- **Collection Frequency**: GitHub Actions cron schedule (default: every 30min)
+- **Collection Frequency**: GitHub Actions cron schedule (default: every 10min)
 - **Retention Period**: Days of historical data to keep (default: 90)
 - **Countries**: Market regions to monitor (default: ["GH"])
 
-## 🔮 Future Enhancements
+## Future Enhancements
 
 ### Planned Features
 - [ ] **Multi-Country Dashboard**: Comparative analysis across regions
@@ -273,7 +273,7 @@ send_rate_threshold_alert(
 - [ ] **Hyperparameter Tuning**: Automated model optimization
 - [ ] **Anomaly Detection**: Identify unusual market conditions
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -327,11 +327,11 @@ st.cache_resource.clear()
 st.cache_data.clear()
 ```
 
-## 📄 License
+## License
 
 This project is open source and available under the [MIT License](LICENSE).
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
@@ -340,7 +340,7 @@ This project is open source and available under the [MIT License](LICENSE).
 5. Push to branch (`git push origin feature/amazing-feature`)
 6. Open a Pull Request
 
-## 📞 Support
+## Support
 
 - **Documentation**: See `plan.md` for detailed implementation notes
 - **Issues**: Report bugs on GitHub Issues
@@ -349,4 +349,4 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ---
 
-**Built with ❤️ using Prophet, ARIMA, Streamlit, and Poetry**
+**Built with Prophet, ARIMA, Streamlit, and Poetry**
