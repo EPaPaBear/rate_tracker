@@ -1,0 +1,65 @@
+name: Fetch Cashramp Rates
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"  # Every 10 minutes
+  workflow_dispatch:        # Allow manual runs
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: latest
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v3
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Install dependencies
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        run: poetry install --only=main
+
+      - name: Fetch rates
+        run: poetry run python fetch_rates.py
+
+      - name: Prune old data (keep 90 days)
+        run: poetry run python -c "from db_utils import prune_old_data; deleted = prune_old_data(90); print(f'Pruned {deleted} old records')"
+
+      - name: Commit & push DB changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add market_rates.db
+          git commit -m "Update market rates [skip ci]" || echo "No changes to commit"
+          git push
+
+      - name: Generate summary
+        run: |
+          echo "## Cashramp Rate Update Summary" >> $GITHUB_STEP_SUMMARY
+          echo "**Timestamp:** $(date -u)" >> $GITHUB_STEP_SUMMARY
+          echo "**Database size:** $(ls -lh market_rates.db | awk '{print $5}')" >> $GITHUB_STEP_SUMMARY
+          poetry run python -c "
+          import sqlite3
+          conn = sqlite3.connect('market_rates.db')
+          result = conn.execute('SELECT COUNT(*), MAX(timestamp) FROM rates').fetchone()
+          conn.close()
+          print(f'**Total records:** {result[0]}')
+          print(f'**Latest timestamp:** {result[1]}')
+          " >> $GITHUB_STEP_SUMMARY
