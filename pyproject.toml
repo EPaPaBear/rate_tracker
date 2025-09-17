@@ -2,7 +2,10 @@
 name = "accrue-tracker"
 version = "0.1.0"
 description = "Cashramp Market Rate Tracker & Forecasting"
-package-mode = false  # ✅ This disables packaging, good for apps
+packages = [
+    { include = "accrue_tracker" }
+]
+
 authors = [
     { name = "epapabear" }
 ]
