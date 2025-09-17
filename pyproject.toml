@@ -2,8 +2,9 @@
 name = "accrue-tracker"
 version = "0.1.0"
 description = "Cashramp Market Rate Tracker & Forecasting"
+package-mode = false
 authors = [
-    {name = "USER"}
+    {name = "epapabear"}
 ]
 readme = "README.md"
 requires-python = "^3.11"
