@@ -177,6 +177,12 @@ def generate_forecast(model_name, model, horizon_hours=24, last_timestamp=None, 
     elif model_name == "arima":
         forecast_values = model.forecast(steps=horizon_hours)
         if last_timestamp is not None:
+            # Remove timezone if present
+            if hasattr(last_timestamp, 'tz_localize'):
+                last_timestamp = last_timestamp.tz_localize(None)
+            elif hasattr(last_timestamp, 'tz'):
+                last_timestamp = pd.Timestamp(last_timestamp).tz_localize(None)
+
             forecast_times = pd.date_range(
                 start=last_timestamp,
                 periods=horizon_hours + 1,
