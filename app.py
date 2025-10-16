@@ -1,7 +1,8 @@
 import streamlit as st
 import pandas as pd
-from datetime import datetime
-from accrue_tracker.db_utils import get_rates_data
+from datetime import datetime, timedelta
+import plotly.graph_objects as go
+from accrue_tracker.db_utils import get_rates_data, save_forecast, get_forecast_history, init_db
 from accrue_tracker.model_selector import select_best_model, generate_forecast
 from accrue_tracker.alert_utils import send_model_performance_alert, send_rate_threshold_alert
 import warnings
@@ -92,22 +93,42 @@ def load_data():
 
 @st.cache_resource(ttl=1800)  # Cache models for 30 minutes
 def train_and_forecast(df_country, horizon, models_to_try, validation_split):
-    """Train models and generate forecast."""
+    """Train models and generate forecast for both deposit and withdrawal rates."""
     try:
-        chosen_name, model, metrics = select_best_model(
-            df_country, models_to_try, validation_split
+        # Train model for deposit rate
+        deposit_name, deposit_model, deposit_metrics = select_best_model(
+            df_country, models_to_try, validation_split, target_column="depositRate"
         )
 
-        forecast_df = generate_forecast(
-            chosen_name, model, horizon, df_country["timestamp"].iloc[-1]
+        deposit_forecast = generate_forecast(
+            deposit_name, deposit_model, horizon, df_country["timestamp"].iloc[-1], column_name="deposit"
         )
 
-        return chosen_name, model, metrics, forecast_df
+        # Train model for withdrawal rate
+        withdrawal_name, withdrawal_model, withdrawal_metrics = select_best_model(
+            df_country, models_to_try, validation_split, target_column="withdrawalRate"
+        )
+
+        withdrawal_forecast = generate_forecast(
+            withdrawal_name, withdrawal_model, horizon, df_country["timestamp"].iloc[-1], column_name="withdrawal"
+        )
+
+        # Merge forecasts
+        forecast_df = deposit_forecast.merge(withdrawal_forecast, on="forecast_time")
+
+        return {
+            "deposit": {"name": deposit_name, "model": deposit_model, "metrics": deposit_metrics},
+            "withdrawal": {"name": withdrawal_name, "model": withdrawal_model, "metrics": withdrawal_metrics},
+            "forecast": forecast_df
+        }
     except Exception as e:
         st.error(f"Model training failed: {str(e)}")
-        return None, None, None, None
+        return None
 
 # Main App
+# Ensure database tables exist
+init_db()
+
 df = load_data()
 
 st.title("Cashramp Market Rates Tracker")
@@ -168,8 +189,46 @@ with col3:
 
 # Historical Rates Chart
 st.subheader("Historical Rates")
-chart_data = df_country.set_index("timestamp")[["depositRate", "withdrawalRate"]]
-st.line_chart(chart_data)
+
+# Create interactive Plotly chart with initial zoom on last 24 hours
+fig = go.Figure()
+
+# Add deposit rate trace
+fig.add_trace(go.Scatter(
+    x=df_country["timestamp"],
+    y=df_country["depositRate"],
+    mode='lines',
+    name='Deposit Rate',
+    line=dict(color='#667eea', width=2)
+))
+
+# Add withdrawal rate trace
+fig.add_trace(go.Scatter(
+    x=df_country["timestamp"],
+    y=df_country["withdrawalRate"],
+    mode='lines',
+    name='Withdrawal Rate',
+    line=dict(color='#764ba2', width=2)
+))
+
+# Set initial x-axis range to last 24 hours
+now = df_country["timestamp"].max()
+last_24h = now - timedelta(hours=24)
+
+fig.update_layout(
+    xaxis_title="Time",
+    yaxis_title="Rate",
+    hovermode='x unified',
+    xaxis=dict(
+        range=[last_24h, now],  # Initial zoom to last 24 hours
+        rangeslider=dict(visible=True),  # Add range slider for easy navigation
+    ),
+    height=500,
+    margin=dict(l=0, r=0, t=0, b=0)
+)
+
+st.plotly_chart(fig, use_container_width=True)
+st.caption(f"Total data points: {len(df_country)} | Chart initially zoomed to last 24 hours - use controls to pan/zoom")
 
 # Forecasting Section
 st.subheader("Forecast (Auto Model Selection)")
@@ -183,28 +242,47 @@ if not models_to_try:
 with st.spinner("Training models and generating forecast..."):
     result = train_and_forecast(df_country, horizon, models_to_try, validation_split)
 
-if result[0] is None:
+if result is None:
     st.stop()
 
-chosen_name, model, metrics, forecast_df = result
+forecast_df = result["forecast"]
+deposit_info = result["deposit"]
+withdrawal_info = result["withdrawal"]
 
 # Model Performance Display
-col1, col2, col3, col4 = st.columns(4)
+st.markdown("### Model Performance")
+col1, col2 = st.columns(2)
+
 with col1:
-    st.metric("Selected Model", chosen_name.upper())
+    st.markdown("**Deposit Rate Model**")
+    subcol1, subcol2, subcol3, subcol4 = st.columns(4)
+    with subcol1:
+        st.metric("Model", deposit_info["name"].upper())
+    with subcol2:
+        st.metric("MAE", f"{deposit_info['metrics']['mae']:.4f}")
+    with subcol3:
+        st.metric("RMSE", f"{deposit_info['metrics']['rmse']:.4f}")
+    with subcol4:
+        st.metric("MAPE", f"{deposit_info['metrics']['mape']:.2f}%")
+
 with col2:
-    st.metric("MAE", f"{metrics['mae']:.4f}")
-with col3:
-    st.metric("RMSE", f"{metrics['rmse']:.4f}")
-with col4:
-    st.metric("MAPE", f"{metrics['mape']:.2f}%")
+    st.markdown("**Withdrawal Rate Model**")
+    subcol1, subcol2, subcol3, subcol4 = st.columns(4)
+    with subcol1:
+        st.metric("Model", withdrawal_info["name"].upper())
+    with subcol2:
+        st.metric("MAE", f"{withdrawal_info['metrics']['mae']:.4f}")
+    with subcol3:
+        st.metric("RMSE", f"{withdrawal_info['metrics']['rmse']:.4f}")
+    with subcol4:
+        st.metric("MAPE", f"{withdrawal_info['metrics']['mape']:.2f}%")
 
 # Model Performance Alert
-if metrics["mape"] > alert_threshold:
+if deposit_info["metrics"]["mape"] > alert_threshold or withdrawal_info["metrics"]["mape"] > alert_threshold:
     st.markdown(f"""
     <div class="alert-danger">
         <strong>Model Performance Alert!</strong><br>
-        The {chosen_name.upper()} model is performing poorly (MAPE: {metrics['mape']:.2f}% > {alert_threshold}%).
+        One or more models are performing poorly (MAPE > {alert_threshold}%).
         Consider retraining with more data or adjusting parameters.
     </div>
     """, unsafe_allow_html=True)
@@ -213,8 +291,10 @@ if metrics["mape"] > alert_threshold:
         # smtp_config already loaded from secrets
 
         if st.button("Send Performance Alert Email"):
+            # Send alert for whichever model is performing poorly
+            worst_model = deposit_info if deposit_info["metrics"]["mape"] > withdrawal_info["metrics"]["mape"] else withdrawal_info
             success = send_model_performance_alert(
-                chosen_name, metrics, alert_threshold,
+                worst_model["name"], worst_model["metrics"], alert_threshold,
                 alert_recipient, alert_sender, smtp_config
             )
             if success:
@@ -224,7 +304,103 @@ if metrics["mape"] > alert_threshold:
 
 # Forecast Display
 st.subheader("Forecast Results")
-st.line_chart(forecast_df.set_index("forecast_time")[["predicted_deposit"]])
+
+# Create interactive Plotly chart for forecast
+forecast_fig = go.Figure()
+
+# Add deposit forecast
+forecast_fig.add_trace(go.Scatter(
+    x=forecast_df["forecast_time"],
+    y=forecast_df["predicted_deposit"],
+    mode='lines+markers',
+    name='Predicted Deposit Rate',
+    line=dict(color='#667eea', width=2),
+    marker=dict(size=4)
+))
+
+# Add withdrawal forecast
+forecast_fig.add_trace(go.Scatter(
+    x=forecast_df["forecast_time"],
+    y=forecast_df["predicted_withdrawal"],
+    mode='lines+markers',
+    name='Predicted Withdrawal Rate',
+    line=dict(color='#764ba2', width=2),
+    marker=dict(size=4)
+))
+
+forecast_fig.update_layout(
+    xaxis_title="Time",
+    yaxis_title="Rate",
+    hovermode='x unified',
+    height=400,
+    margin=dict(l=0, r=0, t=0, b=0)
+)
+
+st.plotly_chart(forecast_fig, use_container_width=True)
+
+# Save forecast to database
+try:
+    save_forecast(
+        forecast_df,
+        selected_country,
+        deposit_info["name"],
+        withdrawal_info["name"],
+        horizon
+    )
+except Exception as e:
+    st.warning(f"Could not save forecast to history: {e}")
+
+# Show Prediction Evolution Over Time
+st.subheader("Prediction Evolution")
+st.caption("See how predictions have changed over time as new data arrives")
+
+forecast_history = get_forecast_history(selected_country, hours_back=168)
+
+if not forecast_history.empty:
+    # Group forecasts by creation time
+    creation_times = forecast_history['created_at'].unique()
+
+    if len(creation_times) > 1:
+        evolution_fig = go.Figure()
+
+        # Plot each forecast set with decreasing opacity (older = more transparent)
+        for i, created_at in enumerate(creation_times[-10:]):  # Show last 10 forecast sets
+            forecast_set = forecast_history[forecast_history['created_at'] == created_at]
+            opacity = 0.3 + (i / len(creation_times[-10:])) * 0.7  # Gradient from 0.3 to 1.0
+
+            evolution_fig.add_trace(go.Scatter(
+                x=forecast_set["forecast_time"],
+                y=forecast_set["predicted_deposit"],
+                mode='lines',
+                name=f'Deposit ({pd.to_datetime(created_at).strftime("%m/%d %H:%M")})',
+                line=dict(color='#667eea', width=1),
+                opacity=opacity,
+                showlegend=i >= len(creation_times[-10:]) - 3  # Only show last 3 in legend
+            ))
+
+        # Add actual rates for comparison
+        evolution_fig.add_trace(go.Scatter(
+            x=df_country["timestamp"],
+            y=df_country["depositRate"],
+            mode='lines',
+            name='Actual Deposit Rate',
+            line=dict(color='#28a745', width=2)
+        ))
+
+        evolution_fig.update_layout(
+            xaxis_title="Time",
+            yaxis_title="Deposit Rate",
+            hovermode='x unified',
+            height=400,
+            margin=dict(l=0, r=0, t=0, b=0)
+        )
+
+        st.plotly_chart(evolution_fig, use_container_width=True)
+        st.caption(f"Showing evolution of predictions from {len(creation_times)} forecast runs")
+    else:
+        st.info("Not enough forecast history yet. Predictions will accumulate over time.")
+else:
+    st.info("No forecast history available yet. Check back after a few hours of running.")
 
 # Rate Threshold Alerts
 min_rate = forecast_df["predicted_deposit"].min()

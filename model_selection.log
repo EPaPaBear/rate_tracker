@@ -141,3 +141,107 @@ cwd: None
 2025-09-17 03:16:48,456 - Prophet model trained successfully. MAE: 4.6191
 2025-09-17 03:16:48,945 - ARIMA model trained successfully. MAE: 0.2911
 2025-09-17 03:16:48,945 - Best model selected: ARIMA, Metrics: {'mae': 0.29108945448700063, 'rmse': np.float64(1.0000883016147417), 'mape': np.float64(2.184607238772831)}
+2025-10-16 23:13:51,400 - cmd: where.exe tbb.dll
+cwd: None
+2025-10-16 23:13:51,566 - Adding TBB (C:\Users\USER\AppData\Local\pypoetry\Cache\virtualenvs\accrue-tracker-_7MzPptF-py3.13\Lib\site-packages\prophet\stan_model\cmdstan-2.33.1\stan\lib\stan_math\lib\tbb) to PATH
+2025-10-16 23:13:51,778 - input tempfile: C:\Users\USER\AppData\Local\Temp\tmpeyf2djf2\te12o75o.json
+2025-10-16 23:13:51,835 - input tempfile: C:\Users\USER\AppData\Local\Temp\tmpeyf2djf2\eod2j6v_.json
+2025-10-16 23:13:51,909 - idx 0
+2025-10-16 23:13:51,909 - running CmdStan, num_threads: None
+2025-10-16 23:13:51,910 - CmdStan args: ['C:\\Users\\USER\\AppData\\Local\\pypoetry\\Cache\\virtualenvs\\accrue-tracker-_7MzPptF-py3.13\\Lib\\site-packages\\prophet\\stan_model\\prophet_model.bin', 'random', 'seed=48302', 'data', 'file=C:\\Users\\USER\\AppData\\Local\\Temp\\tmpeyf2djf2\\te12o75o.json', 'init=C:\\Users\\USER\\AppData\\Local\\Temp\\tmpeyf2djf2\\eod2j6v_.json', 'output', 'file=C:\\Users\\USER\\AppData\\Local\\Temp\\tmpeyf2djf2\\prophet_modelhe5zytrr\\prophet_model-20251016231351.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-10-16 23:13:51,910 - Chain [1] start processing
+2025-10-16 23:13:53,332 - Chain [1] done processing
+2025-10-16 23:13:53,949 - Prophet model trained successfully. MAE: 0.4111
+2025-10-16 23:13:58,213 - ARIMA model trained successfully. MAE: 0.3026
+2025-10-16 23:13:58,213 - Best model selected: ARIMA, Metrics: {'mae': 0.3025837533079915, 'rmse': np.float64(0.5180799394954653), 'mape': np.float64(2.489459932150826)}
+2025-10-16 23:16:53,044 - cmd: where.exe tbb.dll
+cwd: None
+2025-10-16 23:16:53,177 - Adding TBB (C:\Users\USER\AppData\Local\pypoetry\Cache\virtualenvs\accrue-tracker-_7MzPptF-py3.13\Lib\site-packages\prophet\stan_model\cmdstan-2.33.1\stan\lib\stan_math\lib\tbb) to PATH
+2025-10-16 23:16:53,213 - input tempfile: C:\Users\USER\AppData\Local\Temp\tmpst5sl6lc\fn4kf8ap.json
+2025-10-16 23:16:53,275 - input tempfile: C:\Users\USER\AppData\Local\Temp\tmpst5sl6lc\mz2l3uyo.json
+2025-10-16 23:16:53,867 - idx 0
+2025-10-16 23:16:53,868 - running CmdStan, num_threads: None
+2025-10-16 23:16:53,869 - CmdStan args: ['C:\\Users\\USER\\AppData\\Local\\pypoetry\\Cache\\virtualenvs\\accrue-tracker-_7MzPptF-py3.13\\Lib\\site-packages\\prophet\\stan_model\\prophet_model.bin', 'random', 'seed=64669', 'data', 'file=C:\\Users\\USER\\AppData\\Local\\Temp\\tmpst5sl6lc\\fn4kf8ap.json', 'init=C:\\Users\\USER\\AppData\\Local\\Temp\\tmpst5sl6lc\\mz2l3uyo.json', 'output', 'file=C:\\Users\\USER\\AppData\\Local\\Temp\\tmpst5sl6lc\\prophet_modelwty7iiv5\\prophet_model-20251016231653.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-10-16 23:16:53,870 - Chain [1] start processing
+2025-10-16 23:16:55,257 - Chain [1] done processing
+2025-10-16 23:16:55,477 - Prophet model trained successfully. MAE: 0.4111
+2025-10-16 23:16:58,471 - ARIMA model trained successfully. MAE: 0.3026
+2025-10-16 23:16:58,472 - Best model selected: ARIMA, Metrics: {'mae': 0.3025837533079915, 'rmse': np.float64(0.5180799394954653), 'mape': np.float64(2.489459932150826)}
+2025-10-16 23:28:24,684 - cmd: where.exe tbb.dll
+cwd: None
+2025-10-16 23:28:24,839 - Adding TBB (C:\Users\USER\AppData\Local\pypoetry\Cache\virtualenvs\accrue-tracker-_7MzPptF-py3.13\Lib\site-packages\prophet\stan_model\cmdstan-2.33.1\stan\lib\stan_math\lib\tbb) to PATH
+2025-10-16 23:28:24,891 - input tempfile: C:\Users\USER\AppData\Local\Temp\tmpmtb5lkb6\qfg5kq_h.json
+2025-10-16 23:28:25,014 - input tempfile: C:\Users\USER\AppData\Local\Temp\tmpmtb5lkb6\t0dsstoy.json
+2025-10-16 23:28:25,037 - idx 0
+2025-10-16 23:28:25,037 - running CmdStan, num_threads: None
+2025-10-16 23:28:25,037 - CmdStan args: ['C:\\Users\\USER\\AppData\\Local\\pypoetry\\Cache\\virtualenvs\\accrue-tracker-_7MzPptF-py3.13\\Lib\\site-packages\\prophet\\stan_model\\prophet_model.bin', 'random', 'seed=12279', 'data', 'file=C:\\Users\\USER\\AppData\\Local\\Temp\\tmpmtb5lkb6\\qfg5kq_h.json', 'init=C:\\Users\\USER\\AppData\\Local\\Temp\\tmpmtb5lkb6\\t0dsstoy.json', 'output', 'file=C:\\Users\\USER\\AppData\\Local\\Temp\\tmpmtb5lkb6\\prophet_modely8xfbvzp\\prophet_model-20251016232825.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-10-16 23:28:25,037 - Chain [1] start processing
+2025-10-16 23:28:26,416 - Chain [1] done processing
+2025-10-16 23:28:26,582 - Prophet model trained successfully. MAE: 0.4111
+2025-10-16 23:28:29,695 - ARIMA model trained successfully. MAE: 0.3026
+2025-10-16 23:28:29,695 - Best model selected: ARIMA, Metrics: {'mae': 0.3025837533079915, 'rmse': np.float64(0.5180799394954653), 'mape': np.float64(2.489459932150826)}
+2025-10-16 23:28:29,704 - cmd: where.exe tbb.dll
+cwd: None
+2025-10-16 23:28:29,789 - TBB already found in load path
+2025-10-16 23:28:29,817 - input tempfile: C:\Users\USER\AppData\Local\Temp\tmpmtb5lkb6\pyarwzsa.json
+2025-10-16 23:28:29,870 - input tempfile: C:\Users\USER\AppData\Local\Temp\tmpmtb5lkb6\xzfncd9b.json
+2025-10-16 23:28:29,871 - idx 0
+2025-10-16 23:28:29,871 - running CmdStan, num_threads: None
+2025-10-16 23:28:29,871 - CmdStan args: ['C:\\Users\\USER\\AppData\\Local\\pypoetry\\Cache\\virtualenvs\\accrue-tracker-_7MzPptF-py3.13\\Lib\\site-packages\\prophet\\stan_model\\prophet_model.bin', 'random', 'seed=48554', 'data', 'file=C:\\Users\\USER\\AppData\\Local\\Temp\\tmpmtb5lkb6\\pyarwzsa.json', 'init=C:\\Users\\USER\\AppData\\Local\\Temp\\tmpmtb5lkb6\\xzfncd9b.json', 'output', 'file=C:\\Users\\USER\\AppData\\Local\\Temp\\tmpmtb5lkb6\\prophet_modelospeyee_\\prophet_model-20251016232829.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-10-16 23:28:29,871 - Chain [1] start processing
+2025-10-16 23:28:30,372 - Chain [1] done processing
+2025-10-16 23:28:30,542 - Prophet model trained successfully. MAE: 0.3662
+2025-10-16 23:28:32,326 - ARIMA model trained successfully. MAE: 0.3061
+2025-10-16 23:28:32,326 - Best model selected: ARIMA, Metrics: {'mae': 0.3061460277494586, 'rmse': np.float64(0.524263428521613), 'mape': np.float64(2.5700718680177164)}
+2025-10-16 23:32:57,281 - cmd: where.exe tbb.dll
+cwd: None
+2025-10-16 23:32:57,376 - Adding TBB (C:\Users\USER\AppData\Local\pypoetry\Cache\virtualenvs\accrue-tracker-_7MzPptF-py3.13\Lib\site-packages\prophet\stan_model\cmdstan-2.33.1\stan\lib\stan_math\lib\tbb) to PATH
+2025-10-16 23:32:57,414 - input tempfile: C:\Users\USER\AppData\Local\Temp\tmpt2447qle\tykco5l2.json
+2025-10-16 23:32:57,481 - input tempfile: C:\Users\USER\AppData\Local\Temp\tmpt2447qle\1eau4xek.json
+2025-10-16 23:32:57,482 - idx 0
+2025-10-16 23:32:57,482 - running CmdStan, num_threads: None
+2025-10-16 23:32:57,483 - CmdStan args: ['C:\\Users\\USER\\AppData\\Local\\pypoetry\\Cache\\virtualenvs\\accrue-tracker-_7MzPptF-py3.13\\Lib\\site-packages\\prophet\\stan_model\\prophet_model.bin', 'random', 'seed=89918', 'data', 'file=C:\\Users\\USER\\AppData\\Local\\Temp\\tmpt2447qle\\tykco5l2.json', 'init=C:\\Users\\USER\\AppData\\Local\\Temp\\tmpt2447qle\\1eau4xek.json', 'output', 'file=C:\\Users\\USER\\AppData\\Local\\Temp\\tmpt2447qle\\prophet_model7ko6lqyu\\prophet_model-20251016233257.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-10-16 23:32:57,483 - Chain [1] start processing
+2025-10-16 23:32:58,455 - Chain [1] done processing
+2025-10-16 23:32:58,640 - Prophet model trained successfully. MAE: 0.4111
+2025-10-16 23:33:01,678 - ARIMA model trained successfully. MAE: 0.3026
+2025-10-16 23:33:01,678 - Best model selected: ARIMA, Metrics: {'mae': 0.3025837533079915, 'rmse': np.float64(0.5180799394954653), 'mape': np.float64(2.489459932150826)}
+2025-10-16 23:33:01,685 - cmd: where.exe tbb.dll
+cwd: None
+2025-10-16 23:33:01,761 - TBB already found in load path
+2025-10-16 23:33:01,784 - input tempfile: C:\Users\USER\AppData\Local\Temp\tmpt2447qle\y5zjmbpr.json
+2025-10-16 23:33:01,865 - input tempfile: C:\Users\USER\AppData\Local\Temp\tmpt2447qle\w2p6n2re.json
+2025-10-16 23:33:01,866 - idx 0
+2025-10-16 23:33:01,866 - running CmdStan, num_threads: None
+2025-10-16 23:33:01,866 - CmdStan args: ['C:\\Users\\USER\\AppData\\Local\\pypoetry\\Cache\\virtualenvs\\accrue-tracker-_7MzPptF-py3.13\\Lib\\site-packages\\prophet\\stan_model\\prophet_model.bin', 'random', 'seed=39873', 'data', 'file=C:\\Users\\USER\\AppData\\Local\\Temp\\tmpt2447qle\\y5zjmbpr.json', 'init=C:\\Users\\USER\\AppData\\Local\\Temp\\tmpt2447qle\\w2p6n2re.json', 'output', 'file=C:\\Users\\USER\\AppData\\Local\\Temp\\tmpt2447qle\\prophet_modeldeoxf42z\\prophet_model-20251016233301.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-10-16 23:33:01,867 - Chain [1] start processing
+2025-10-16 23:33:02,476 - Chain [1] done processing
+2025-10-16 23:33:02,673 - Prophet model trained successfully. MAE: 0.3662
+2025-10-16 23:33:04,727 - ARIMA model trained successfully. MAE: 0.3061
+2025-10-16 23:33:04,727 - Best model selected: ARIMA, Metrics: {'mae': 0.3061460277494586, 'rmse': np.float64(0.524263428521613), 'mape': np.float64(2.5700718680177164)}
+2025-10-16 23:33:39,776 - cmd: where.exe tbb.dll
+cwd: None
+2025-10-16 23:33:39,858 - Adding TBB (C:\Users\USER\AppData\Local\pypoetry\Cache\virtualenvs\accrue-tracker-_7MzPptF-py3.13\Lib\site-packages\prophet\stan_model\cmdstan-2.33.1\stan\lib\stan_math\lib\tbb) to PATH
+2025-10-16 23:33:39,887 - input tempfile: C:\Users\USER\AppData\Local\Temp\tmp9rb4f5yz\hsqj_dth.json
+2025-10-16 23:33:39,942 - input tempfile: C:\Users\USER\AppData\Local\Temp\tmp9rb4f5yz\7fvfdt0e.json
+2025-10-16 23:33:39,973 - idx 0
+2025-10-16 23:33:39,973 - running CmdStan, num_threads: None
+2025-10-16 23:33:39,973 - CmdStan args: ['C:\\Users\\USER\\AppData\\Local\\pypoetry\\Cache\\virtualenvs\\accrue-tracker-_7MzPptF-py3.13\\Lib\\site-packages\\prophet\\stan_model\\prophet_model.bin', 'random', 'seed=96679', 'data', 'file=C:\\Users\\USER\\AppData\\Local\\Temp\\tmp9rb4f5yz\\hsqj_dth.json', 'init=C:\\Users\\USER\\AppData\\Local\\Temp\\tmp9rb4f5yz\\7fvfdt0e.json', 'output', 'file=C:\\Users\\USER\\AppData\\Local\\Temp\\tmp9rb4f5yz\\prophet_modelnku6e3c3\\prophet_model-20251016233339.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-10-16 23:33:39,973 - Chain [1] start processing
+2025-10-16 23:33:40,964 - Chain [1] done processing
+2025-10-16 23:33:41,134 - Prophet model trained successfully. MAE: 0.4111
+2025-10-16 23:33:44,253 - ARIMA model trained successfully. MAE: 0.3026
+2025-10-16 23:33:44,254 - Best model selected: ARIMA, Metrics: {'mae': 0.3025837533079915, 'rmse': np.float64(0.5180799394954653), 'mape': np.float64(2.489459932150826)}
+2025-10-16 23:33:44,261 - cmd: where.exe tbb.dll
+cwd: None
+2025-10-16 23:33:44,341 - TBB already found in load path
+2025-10-16 23:33:44,366 - input tempfile: C:\Users\USER\AppData\Local\Temp\tmp9rb4f5yz\dz8srxha.json
+2025-10-16 23:33:44,429 - input tempfile: C:\Users\USER\AppData\Local\Temp\tmp9rb4f5yz\851xofw_.json
+2025-10-16 23:33:44,430 - idx 0
+2025-10-16 23:33:44,430 - running CmdStan, num_threads: None
+2025-10-16 23:33:44,430 - CmdStan args: ['C:\\Users\\USER\\AppData\\Local\\pypoetry\\Cache\\virtualenvs\\accrue-tracker-_7MzPptF-py3.13\\Lib\\site-packages\\prophet\\stan_model\\prophet_model.bin', 'random', 'seed=12484', 'data', 'file=C:\\Users\\USER\\AppData\\Local\\Temp\\tmp9rb4f5yz\\dz8srxha.json', 'init=C:\\Users\\USER\\AppData\\Local\\Temp\\tmp9rb4f5yz\\851xofw_.json', 'output', 'file=C:\\Users\\USER\\AppData\\Local\\Temp\\tmp9rb4f5yz\\prophet_modeljsxadvip\\prophet_model-20251016233344.csv', 'method=optimize', 'algorithm=lbfgs', 'iter=10000']
+2025-10-16 23:33:44,430 - Chain [1] start processing
+2025-10-16 23:33:44,918 - Chain [1] done processing
+2025-10-16 23:33:45,088 - Prophet model trained successfully. MAE: 0.3662
+2025-10-16 23:33:46,961 - ARIMA model trained successfully. MAE: 0.3061
+2025-10-16 23:33:46,961 - Best model selected: ARIMA, Metrics: {'mae': 0.3061460277494586, 'rmse': np.float64(0.524263428521613), 'mape': np.float64(2.5700718680177164)}

@@ -24,14 +24,15 @@ def evaluate_forecast(y_true, y_pred):
 
     return {"mae": mae, "rmse": rmse, "mape": mape}
 
-def select_best_model(df, models_to_try=["prophet", "arima"], validation_split=0.2):
+def select_best_model(df, models_to_try=["prophet", "arima"], validation_split=0.2, target_column="depositRate"):
     """
     Train multiple models and select the best one based on validation metrics.
 
     Args:
-        df: DataFrame with 'timestamp' and 'depositRate' columns
+        df: DataFrame with 'timestamp' and rate columns
         models_to_try: List of model names to evaluate
         validation_split: Fraction of data to use for validation
+        target_column: Column to forecast ('depositRate' or 'withdrawalRate')
 
     Returns:
         tuple: (best_model_name, best_model, best_metrics)
@@ -42,10 +43,10 @@ def select_best_model(df, models_to_try=["prophet", "arima"], validation_split=0
     df = df.copy()
 
     # Ensure we have the right column names
-    if 'timestamp' in df.columns and 'depositRate' in df.columns:
-        df = df.rename(columns={"timestamp": "ds", "depositRate": "y"})
+    if 'timestamp' in df.columns and target_column in df.columns:
+        df = df.rename(columns={"timestamp": "ds", target_column: "y"})
     elif 'ds' not in df.columns or 'y' not in df.columns:
-        raise ValueError("DataFrame must have 'timestamp' and 'depositRate' columns or 'ds' and 'y' columns")
+        raise ValueError(f"DataFrame must have 'timestamp' and '{target_column}' columns or 'ds' and 'y' columns")
 
     df = df.sort_values("ds")
 
@@ -143,7 +144,7 @@ def select_best_model(df, models_to_try=["prophet", "arima"], validation_split=0
     logging.info(f"Best model selected: {best_model_name.upper()}, Metrics: {best_metrics}")
     return best_model_name, best_model, best_metrics
 
-def generate_forecast(model_name, model, horizon_hours=24, last_timestamp=None):
+def generate_forecast(model_name, model, horizon_hours=24, last_timestamp=None, column_name="deposit"):
     """
     Generate forecast using the trained model.
 
@@ -152,9 +153,10 @@ def generate_forecast(model_name, model, horizon_hours=24, last_timestamp=None):
         model: Trained model object
         horizon_hours: Number of hours to forecast
         last_timestamp: Last timestamp in the training data
+        column_name: Name for the prediction column ('deposit' or 'withdrawal')
 
     Returns:
-        DataFrame with forecast_time and predicted_deposit columns
+        DataFrame with forecast_time and predicted_{column_name} columns
     """
     if model_name == "prophet":
         # Create future dates starting from the last timestamp
@@ -169,7 +171,7 @@ def generate_forecast(model_name, model, horizon_hours=24, last_timestamp=None):
         future_df = pd.DataFrame({'ds': future_dates})
         forecast = model.predict(future_df)
         forecast_df = forecast[["ds", "yhat"]].rename(
-            columns={"ds": "forecast_time", "yhat": "predicted_deposit"}
+            columns={"ds": "forecast_time", "yhat": f"predicted_{column_name}"}
         )
 
     elif model_name == "arima":
@@ -189,7 +191,7 @@ def generate_forecast(model_name, model, horizon_hours=24, last_timestamp=None):
 
         forecast_df = pd.DataFrame({
             "forecast_time": forecast_times,
-            "predicted_deposit": forecast_values
+            f"predicted_{column_name}": forecast_values
         })
     else:
         raise ValueError(f"Unknown model name: {model_name}")

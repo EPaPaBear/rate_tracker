@@ -1,15 +1,15 @@
-name: Fetch Cashramp Rates
+name: Generate Forecasts
 
 on:
   schedule:
-    - cron: "*/10 * * * *"  # Every 10 minutes
+    - cron: "0 * * * *"  # Every hour at minute 0
   workflow_dispatch:        # Allow manual runs
 
 permissions:
   contents: write
 
 jobs:
-  fetch:
+  forecast:
     runs-on: ubuntu-latest
 
     steps:
@@ -40,32 +40,32 @@ jobs:
       - name: Install dependencies
         run: |
           poetry env use python3.11
-          poetry install --only=main --no-root  
-        
-      - name: Fetch rates
-        run: poetry run python accrue_tracker/fetch_rates.py
+          poetry install --only=main --no-root
 
-      - name: Prune old data (keep 90 days)
-        run: poetry run python -c "from accrue_tracker.db_utils import prune_old_data; deleted = prune_old_data(90); print(f'Pruned {deleted} old records')"
+      - name: Generate forecasts
+        run: poetry run python accrue_tracker/generate_forecasts.py
 
       - name: Commit & push DB changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add market_rates.db
-          git commit -m "Update market rates [skip ci]" || echo "No changes to commit"
+          git commit -m "Update forecasts [skip ci]" || echo "No changes to commit"
           git push
 
       - name: Generate summary
         run: |
-          echo "## Cashramp Rate Update Summary" >> $GITHUB_STEP_SUMMARY
+          echo "## Forecast Generation Summary" >> $GITHUB_STEP_SUMMARY
           echo "**Timestamp:** $(date -u)" >> $GITHUB_STEP_SUMMARY
           echo "**Database size:** $(ls -lh market_rates.db | awk '{print $5}')" >> $GITHUB_STEP_SUMMARY
           poetry run python -c "
           import sqlite3
           conn = sqlite3.connect('market_rates.db')
-          result = conn.execute('SELECT COUNT(*), MAX(timestamp) FROM rates').fetchone()
+          rates_count = conn.execute('SELECT COUNT(*) FROM rates').fetchone()[0]
+          forecasts_count = conn.execute('SELECT COUNT(*) FROM forecasts').fetchone()[0]
+          latest_forecast = conn.execute('SELECT MAX(created_at) FROM forecasts').fetchone()[0]
           conn.close()
-          print(f'**Total records:** {result[0]}')
-          print(f'**Latest timestamp:** {result[1]}')
+          print(f'**Total rate records:** {rates_count}')
+          print(f'**Total forecast records:** {forecasts_count}')
+          print(f'**Latest forecast:** {latest_forecast}')
           " >> $GITHUB_STEP_SUMMARY
