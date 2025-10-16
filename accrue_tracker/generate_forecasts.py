@@ -5,8 +5,8 @@ Generates predictions for all countries and saves them to the database.
 
 import sys
 from datetime import datetime, UTC
-from accrue_tracker.db_utils import get_rates_data, save_forecast, init_db
-from accrue_tracker.model_selector import select_best_model, generate_forecast
+from .db_utils import get_rates_data, save_forecast, init_db
+from .model_selector import select_best_model, generate_forecast
 import warnings
 warnings.filterwarnings('ignore')
 
