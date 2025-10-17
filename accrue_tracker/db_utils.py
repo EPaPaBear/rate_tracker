@@ -103,11 +103,11 @@ def get_forecast_history(country="GH", hours_back=168):
 
     if not df.empty:
         # Parse timestamps with UTC timezone handling
-        df['created_at'] = pd.to_datetime(df['created_at'], utc=True)
-        df['forecast_time'] = pd.to_datetime(df['forecast_time'], utc=True)
+        df['created_at'] = pd.to_datetime(df['created_at'], format='ISO8601', errors='coerce')
+        df['forecast_time'] = pd.to_datetime(df['forecast_time'], format='ISO8601', errors='coerce')
 
-        # Convert to timezone-naive for consistency
-        df['created_at'] = df['created_at'].dt.tz_localize(None)
-        df['forecast_time'] = df['forecast_time'].dt.tz_localize(None)
+        # # Convert to timezone-naive for consistency
+        # df['created_at'] = df['created_at'].dt.tz_localize(None)
+        # df['forecast_time'] = df['forecast_time'].dt.tz_localize(None)
 
     return df
